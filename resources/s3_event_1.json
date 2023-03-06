@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "userIdentity": {
+        "principalId": "AWS:AIDARZDO4NTZG3P4QFRLD"
+      },
+      "eventName": "ObjectCreated:Put",
+      "eventSource": "aws:s3",
+      "requestParameters": {
+        "sourceIPAddress": "73.208.153.133"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "lambda",
+        "bucket": {
+          "name": "dipfins-store-dev",
+          "ownerIdentity": {
+            "principalId": "A2MEWJYFSIDKOT"
+          },
+          "arn": "arn:aws:s3:::dipfins-store-dev"
+        },
+        "object": {
+          "key": "3.in.json",
+          "size": 294,
+          "eTag": "6558060af968cc81f5201bd530979520",
+          "sequencer": "0064065E07B0824DF4"
+        }
+      },
+      "awsRegion": "us-east-1",
+      "responseElements": {
+        "x-amz-request-id": "R9BHNFMQ5SAYFYGQ",
+        "x-amz-id-2": "5hK1azMXgeImb0Yz71oolAWpXOLsfEayd7N5y6A7umQoBjwOXQv7GUU8EtZEoKkGNT4wzXPtbfWAMnwiJQ1Ada3jaxVbe2D1"
+      },
+      "eventVersion": "2.1",
+      "eventTime": "2023-03-06T21:41:27.735Z"
+    }
+  ]
+}
