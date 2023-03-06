@@ -33,7 +33,7 @@
 (defn -handleRequest
   [this input-stream output-stream context]
   (prn (json/read-str (slurp input-stream)))
-  (prn context)
+  (prn (.getAwsRequestId context))
   (let [handle (io/writer output-stream)]
     (.write handle (str "hello" "world"))
     (.flush handle)))
