@@ -1,5 +1,6 @@
 (ns dipfins.core
-  (:require [clojure.java.io :as io])
+  (:require [clojure.data.json :as json]
+            [clojure.java.io :as io])
   (:import (com.amazonaws.services.lambda.runtime Context)))
 
 (gen-class
@@ -31,7 +32,7 @@
 
 (defn -handleRequest
   [this input-stream output-stream context]
-  (prn (slurp input-stream))
+  (prn (json/read-str (slurp input-stream)))
   (prn context)
   (let [handle (io/writer output-stream)]
     (.write handle (str "hello" "world"))
