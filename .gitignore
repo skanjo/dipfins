@@ -1,6 +1,10 @@
 .idea/
 *.iml
 
+.terraform/
+*.tfstate
+*.tfstate.backup
+
 /target
 /classes
 /checkouts
