@@ -1,4 +1,4 @@
-(ns dipfins.ip_address
+(ns dipfins.ip
   (:require [clojure.data.json :as json]
             [clojure.set :as set]))
 
@@ -10,15 +10,12 @@
     false))
 
 (defn scan-for-ipv4 [m]
-  (reduce-kv
-    (fn [acc _ v]
-      (cond
-        (nil? v) acc
-        (string? v) (if (is-ipv4? v) (conj acc v) acc)
-        (or (map? v) (vector? v)) (set/union acc (scan-for-ipv4 v))
-        :else acc))
-    #{}
-    m))
-
-(defn read-file [f]
-  (json/read-str (slurp "resources/3.in.json")))
+  (vec (reduce-kv
+         (fn [acc _ v]
+           (cond
+             (nil? v) acc
+             (string? v) (if (is-ipv4? v) (conj acc v) acc)
+             (or (map? v) (vector? v)) (set/union acc (scan-for-ipv4 v))
+             :else acc))
+         #{}
+         m)))
