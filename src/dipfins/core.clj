@@ -10,6 +10,8 @@
   :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler])
 
 (defn process-record [record]
+  "Given a record map from an S3 trigger event, read the file, scan for IP
+  addresses, and then write the result back to the bucket."
   (let [bucket (get-in record [:s3 :bucket :name])
         key-src (get-in record [:s3 :object :key])
         key-dest (str/replace key-src "in" "out")]
@@ -22,11 +24,13 @@
       (s3/write-object bucket key-dest))))
 
 (defn -handleRequest
+  "Entry point of the Lambda, reads the event from input stream and starts
+  processing all records from the event."
   [_this in out _ctx]
   (let [evt (json/read-str (slurp in) :key-fn keyword)
         records (:Records evt)]
     (dorun (map process-record records)))
 
   (let [handle (io/writer out)]
-    (.write handle (str "hello" "world"))
+    (.write handle "OK")
     (.flush handle)))
