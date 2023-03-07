@@ -50,9 +50,9 @@ module "lambda" {
   function_name = local.lambda_name
   description   = "Extract IPv4 addresses from S3 file and write result back to S3"
   handler       = local.lambda_handler
-  runtime       = "java11"
-  memory_size   = 512
-  timeout       = 30
+  runtime       = var.lambda_runtime
+  memory_size   = var.lambda_memory_size
+  timeout       = var.lambda_timeout
 
   create_package         = false
   local_existing_package = local.lambda_build_path
@@ -61,11 +61,12 @@ module "lambda" {
 module "s3_bucket" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v3.7.0"
 
-  bucket = local.s3_bucket_name
-  acl    = "private"
+  bucket        = local.s3_bucket_name
+  acl           = "private"
+  force_destroy = var.s3_force_destroy
 
   versioning = {
-    enabled = false
+    enabled = var.s3_versioning_enabled
   }
 }
 
@@ -79,7 +80,7 @@ module "s3_bucket_notification" {
       function_arn  = module.lambda.lambda_function_arn
       function_name = module.lambda.lambda_function_name
       events        = ["s3:ObjectCreated:*"]
-      filter_suffix = ".in.json"
+      filter_suffix = var.s3_filter_suffix
     }
   }
 }
