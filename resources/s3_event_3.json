@@ -13,11 +13,11 @@
         "s3SchemaVersion": "1.0",
         "configurationId": "lambda",
         "bucket": {
-          "name": "dipfins-store-dev",
+          "name": "dipfins-scanner",
           "ownerIdentity": {
             "principalId": "A2MEWJYFSIDKOT"
           },
-          "arn": "arn:aws:s3:::dipfins-store-dev"
+          "arn": "arn:aws:s3:::dipfins-scanner"
         },
         "object": {
           "key": "3.in.json",
