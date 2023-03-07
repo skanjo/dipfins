@@ -12,14 +12,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-locals {
-  lambda_name       = "dipfins-${var.stage}"
-  lambda_build_path = "../target/dipfins-0.1.0-SNAPSHOT-standalone.jar"
-  lambda_handler    = "dipfins.core.handler"
-  s3_bucket_name    = "dipfins-store-${var.stage}"
-}
-
-data "aws_iam_policy_document" "lambda_s3_policy" {
+data "aws_iam_policy_document" "lambda_s3" {
   version = "2012-10-17"
   statement {
     sid     = "AllowLambdaS3Access"
@@ -34,34 +27,34 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
   }
 }
 
-resource aws_iam_policy lambda_s3_policy {
-  name   = "dipfins-${var.stage}-s3"
-  policy = data.aws_iam_policy_document.lambda_s3_policy.json
+resource aws_iam_policy lambda_s3 {
+  name   = "${var.service_name}-s3"
+  policy = data.aws_iam_policy_document.lambda_s3.json
 }
 
-resource aws_iam_role_policy_attachment lambda_s3_policy {
+resource aws_iam_role_policy_attachment lambda_s3 {
   role       = module.lambda.lambda_role_name
-  policy_arn = aws_iam_policy.lambda_s3_policy.arn
+  policy_arn = aws_iam_policy.lambda_s3.arn
 }
 
 module "lambda" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=v4.10.1"
 
-  function_name = local.lambda_name
+  function_name = var.service_name
   description   = "Extract IPv4 addresses from S3 file and write result back to S3"
-  handler       = local.lambda_handler
+  handler       = var.lambda_handler
   runtime       = var.lambda_runtime
   memory_size   = var.lambda_memory_size
   timeout       = var.lambda_timeout
 
   create_package         = false
-  local_existing_package = local.lambda_build_path
+  local_existing_package = var.lambda_build_path
 }
 
 module "s3_bucket" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket?ref=v3.7.0"
 
-  bucket        = local.s3_bucket_name
+  bucket        = var.service_name
   acl           = "private"
   force_destroy = var.s3_force_destroy
 

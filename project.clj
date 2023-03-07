@@ -6,4 +6,6 @@
                  [com.cognitect.aws/api "0.8.652"]
                  [com.cognitect.aws/endpoints "1.1.12.415"]
                  [com.cognitect.aws/s3 "825.2.1250.0"]]
-  :aot :all)
+
+  :profiles {:uberjar {:aot          :all
+                       :uberjar-name "dipfins-scanner.jar"}})
