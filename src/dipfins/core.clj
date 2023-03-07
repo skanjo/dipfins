@@ -17,6 +17,7 @@
       (s3/read-object bucket key-src)
       (json/read-str)
       (ip/scan-for-ipv4)
+      (vec)
       (json/write-str)
       (s3/write-object bucket key-dest))))
 

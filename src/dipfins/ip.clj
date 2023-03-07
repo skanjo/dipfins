@@ -10,12 +10,12 @@
     false))
 
 (defn scan-for-ipv4 [m]
-  (vec (reduce-kv
-         (fn [acc _ v]
-           (cond
-             (nil? v) acc
-             (string? v) (if (is-ipv4? v) (conj acc v) acc)
-             (or (map? v) (vector? v)) (set/union acc (scan-for-ipv4 v))
-             :else acc))
-         #{}
-         m)))
+  (reduce-kv
+    (fn [acc _ v]
+      (cond
+        (nil? v) acc
+        (string? v) (if (is-ipv4? v) (conj acc v) acc)
+        (or (map? v) (vector? v)) (set/union acc (scan-for-ipv4 v))
+        :else acc))
+    #{}
+    m))
